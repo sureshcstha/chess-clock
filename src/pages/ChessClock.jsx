@@ -78,7 +78,7 @@ const ChessClock = () => {
 
   const switchPlayer = () => {
     if (!isRunning) return; // Prevent switching when the game is paused
-    
+
     if (activePlayer === "player1") {
       setPlayer1Moves((prev) => prev + 1);
       setActivePlayer("player2");
@@ -104,7 +104,9 @@ const ChessClock = () => {
 
   return (
     <div className="flex flex-col items-center p-6">
-      <h1 className="text-2xl font-bold mb-4">Chess Clock</h1>
+      <h1 className="text-2xl font-bold mb-4" aria-label="Chess Clock Application">
+        Chess Clock
+      </h1>
 
       {/* Time Preset Buttons */}
       <div className="flex space-x-4 mb-6">
@@ -115,6 +117,7 @@ const ChessClock = () => {
               presetTime === time ? "bg-blue-500 text-white" : "bg-gray-200"
             }`}
             onClick={() => handlePresetChange(time)}
+            aria-label={`Set timer to ${Math.floor(time / 60)} minutes`}
           >
             {Math.floor(time / 60)} mins
           </button>
@@ -129,6 +132,7 @@ const ChessClock = () => {
           time={formatTime(player1Time)}
           moves={player1Moves}
           onClick={activePlayer === "player1" && isRunning ? switchPlayer : null}
+          aria-label={`Player 1 timer: ${formatTime(player1Time)}. Moves: ${player1Moves}`}
         />
         <PlayerClock
           player="Player 2"
@@ -136,6 +140,7 @@ const ChessClock = () => {
           time={formatTime(player2Time)}
           moves={player2Moves}
           onClick={activePlayer === "player2" && isRunning ? switchPlayer : null}
+          aria-label={`Player 2 timer: ${formatTime(player2Time)}. Moves: ${player2Moves}`}
         />
       </div>
 
@@ -147,6 +152,7 @@ const ChessClock = () => {
               isRunning ? "bg-yellow-500" : "bg-green-500"
             } text-white`}
             onClick={startOrPauseGame}
+            aria-label={isRunning ? "Pause the game" : "Start the game"}
           >
             {isRunning ? "Pause" : "Start"}
           </button>
@@ -167,6 +173,7 @@ const ChessClock = () => {
               }
             });
           }}
+          aria-label="Reset the game timer"
         >
           Reset
         </button>
