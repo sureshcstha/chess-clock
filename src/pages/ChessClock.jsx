@@ -139,14 +139,16 @@ const ChessClock = () => {
 
       {/* Control Buttons */}
       <div className="flex space-x-4">
-        <button
-          className={`px-4 py-2 rounded ${
-            isRunning ? "bg-yellow-500" : "bg-green-500"
-          } text-white`}
-          onClick={startOrPauseGame}
-        >
-          {isRunning ? "Pause" : "Start"}
-        </button>
+        {(player1Time > 0 && player2Time > 0) && (
+          <button
+            className={`px-4 py-2 rounded ${
+              isRunning ? "bg-yellow-500" : "bg-green-500"
+            } text-white`}
+            onClick={startOrPauseGame}
+          >
+            {isRunning ? "Pause" : "Start"}
+          </button>
+        )}
         <button
           className="px-4 py-2 bg-red-500 text-white rounded"
           onClick={() => {
