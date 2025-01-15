@@ -51,6 +51,14 @@ const ChessClock = () => {
   };
 
   const switchPlayer = () => {
+    if (activePlayer === "player1" && player1Time === 0) {
+      alert("Player 1's time is up! Please reset the timer.");
+      return; // Stop switching players if Player 1's time is up
+    } else if (activePlayer === "player2" && player2Time === 0) {
+      alert("Player 2's time is up! Please reset the timer.");
+      return; // Stop switching players if Player 2's time is up
+    }
+    
     if (activePlayer === "player1") {
       setPlayer1Moves((prev) => prev + 1);
       setActivePlayer("player2");
