@@ -1,8 +1,10 @@
-import React from 'react'
+import ChessClock from "./pages/ChessClock";
 
 function App() {
   return (
-    <div>App</div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <ChessClock />
+    </div>
   )
 }
 
