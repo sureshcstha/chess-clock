@@ -77,6 +77,8 @@ const ChessClock = () => {
   };
 
   const switchPlayer = () => {
+    if (!isRunning) return; // Prevent switching when the game is paused
+    
     if (activePlayer === "player1") {
       setPlayer1Moves((prev) => prev + 1);
       setActivePlayer("player2");
