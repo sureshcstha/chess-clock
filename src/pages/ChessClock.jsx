@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import PlayerClock from "../components/PlayerClock";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const ChessClock = () => {
   const [presetTime, setPresetTime] = useState(600); // Default preset: 10 minutes (600 seconds)
@@ -24,6 +28,28 @@ const ChessClock = () => {
 
     return () => clearInterval(timer);
   }, [activePlayer, isRunning]);
+
+  // UseEffect to show alert when either player's time reaches 0
+  useEffect(() => {
+    if (player1Time === 0 || player2Time === 0) {
+      MySwal.fire({
+        title: "Time's Up!",
+        html: `Player ${
+          player1Time === 0 ? "1" : "2"
+        }'s time is up. Please reset the timer.`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Reset Timer",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          resetGame();
+        } else {
+          setIsRunning(false); // Pause the game
+        }
+      });
+    }
+  }, [player1Time, player2Time]); // Watch both player times
 
   const startOrPauseGame = () => {
     if (isRunning) {
@@ -51,14 +77,6 @@ const ChessClock = () => {
   };
 
   const switchPlayer = () => {
-    if (activePlayer === "player1" && player1Time === 0) {
-      alert("Player 1's time is up! Please reset the timer.");
-      return; // Stop switching players if Player 1's time is up
-    } else if (activePlayer === "player2" && player2Time === 0) {
-      alert("Player 2's time is up! Please reset the timer.");
-      return; // Stop switching players if Player 2's time is up
-    }
-    
     if (activePlayer === "player1") {
       setPlayer1Moves((prev) => prev + 1);
       setActivePlayer("player2");
@@ -131,7 +149,20 @@ const ChessClock = () => {
         </button>
         <button
           className="px-4 py-2 bg-red-500 text-white rounded"
-          onClick={resetGame}
+          onClick={() => {
+            MySwal.fire({
+              title: "Reset the clock?",
+              icon: "question",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              cancelButtonText: "No",
+              reverseButtons: true, // Ensures "No" appears first
+            }).then((result) => {
+              if (result.isConfirmed) {
+                resetGame();
+              }
+            });
+          }}
         >
           Reset
         </button>
